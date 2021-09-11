@@ -18,7 +18,7 @@ contract DSCMateIdentity is IDSCMateIdentity {
         _;
     }
 
-    function setIdentity(address mates, uint256 mateId) onlyHolder(mates, mateId) external {
+    function set(address mates, uint256 mateId) onlyHolder(mates, mateId) external {
         identities[msg.sender] = Identity({
             mates: mates,
             mateId: mateId
@@ -27,7 +27,7 @@ contract DSCMateIdentity is IDSCMateIdentity {
 
     function identity(address who) external returns (address mates, uint256 mateId) {
         Identity memory _identity = identities[who];
-        if (_identity.mates != address(0) && IKIP17Enumerable(mates).ownerOf(mateId) == who) {
+        if (_identity.mates != address(0) && IKIP17Enumerable(_identity.mates).ownerOf(mateId) == who) {
             mates = _identity.mates;
             mateId = _identity.mateId;
         }
