@@ -1,6 +1,6 @@
 pragma solidity ^0.5.6;
 
-import "./klaytn-contracts/token/KIP17/IKIP17Enumerable.sol";
+import "./klaytn-contracts/token/KIP17/IKIP17.sol";
 import "./klaytn-contracts/math/SafeMath.sol";
 import "./interfaces/IDSCMateIdentity.sol";
 
@@ -14,7 +14,7 @@ contract DSCMateIdentity is IDSCMateIdentity {
     mapping(address => Identity) public identities;
 
     modifier onlyHolder(address mates, uint256 mateId) {
-        require(IKIP17Enumerable(mates).ownerOf(mateId) == msg.sender);
+        require(IKIP17(mates).ownerOf(mateId) == msg.sender);
         _;
     }
 
@@ -27,7 +27,7 @@ contract DSCMateIdentity is IDSCMateIdentity {
 
     function identity(address who) external returns (address mates, uint256 mateId) {
         Identity memory _identity = identities[who];
-        if (_identity.mates != address(0) && IKIP17Enumerable(_identity.mates).ownerOf(mateId) == who) {
+        if (_identity.mates != address(0) && IKIP17(_identity.mates).ownerOf(mateId) == who) {
             mates = _identity.mates;
             mateId = _identity.mateId;
         }
